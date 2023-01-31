@@ -1,9 +1,16 @@
-import Directory from "./components/directory/directory.component";
+import { Route, Routes, Outlet } from 'react-router-dom';
+import Home from './pages/home/home.pages.jsx';
+import Navigation from './components/navigation/navigation.components.jsx';
+
 
 const App = () => {
   return (
-    <Directory />
-  );
+    <Routes>
+      <Route path='/' element={<Navigation />}>
+        <Route index element={<Home />} />
+      </Route>
+    </Routes>
+  )
 }
 
 export default App;
