@@ -1,9 +1,13 @@
-import { useState } from 'react';
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
+import { useState, useContext } from 'react';
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from '../../utils/firebase/firebase.utils';
 import Button from '../button/button.component';
 import FromInput from '../form-input/form-input.component';
 import './sign-up-form.styles.scss';
 
+import { UserContext } from '../../contexts/user.context';
 
 const defaultFormField = {
   displayName: '',
@@ -16,26 +20,30 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormField);
   const { displayName, email, password, confirmPassword } = formFields;
 
+  const { setCurrentUser } = useContext(UserContext);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    if(password !== confirmPassword) {
+
+    if (password !== confirmPassword) {
       alert('password not match');
       return;
     }
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(email, password);
-      
-      await createUserDocumentFromAuth(user, { displayName })
-      setFormFields(defaultFormField)
+      const { user } = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      setCurrentUser(user);
+
+      await createUserDocumentFromAuth(user, { displayName });
+      setFormFields(defaultFormField);
     } catch (error) {
       console.log('user creation encounter an error', error);
     }
-
-    
-    
-  }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -44,9 +52,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className='sign-up-container'>
+    <div className="sign-up-container">
       <h2>Don't have an account?</h2>
-      <span >Sign up with your email and password</span>
+      <span>Sign up with your email and password</span>
 
       <form onSubmit={handleSubmit}>
         <FromInput
