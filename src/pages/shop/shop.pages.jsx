@@ -11,13 +11,13 @@ import './shop.styles.scss';
 
 const Shop = () => {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const getCategoriesMap = async () => {
-      const getCategory = await getCategoriesAndDocuments();
-      dispatch(setCategories(getCategory))
+      const getCategory = await getCategoriesAndDocuments('categories');
+      dispatch(setCategories(getCategory));
     };
-    
+
     getCategoriesMap();
   }, []);
   return (

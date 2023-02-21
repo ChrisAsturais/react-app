@@ -10,10 +10,12 @@ import './category.styles.scss';
 const Category = () => {
   const categories = useSelector(selectCategories);
   const { category } = useParams();
-
+  console.log('render category')
   const [products, setProducts] = useState(categories[category]);
 
+
   useEffect(() => {
+    console.log('effect fired calling setproducts')
     setProducts(categories[category]);
   }, [category, categories]);
 
